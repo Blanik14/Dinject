@@ -57,8 +57,24 @@ namespace Dinject
 
 			ImplementationType implType = this.GetRegisteredTypeFromType(instanceType);
 			object[] parameterInstances = GetParameterInstancesFromType(implType);
+			object instance = this.CreateInstanceFromType(implType.Type, parameterInstances);
+			return instance;
+		}
 
-			return Activator.CreateInstance(instanceType, parameterInstances);
+		private object CreateInstanceFromType(Type instanceType, params object[] parameterInstances)
+		{
+			object instance = null;
+
+			if (parameterInstances.Length > 0)
+			{
+				instance = Activator.CreateInstance(instanceType, parameterInstances);
+			}
+			else
+			{
+				instance = Activator.CreateInstance(instanceType);
+			}
+
+			return instance;
 		}
 
 		private object[] GetParameterInstancesFromType(ImplementationType implType)
